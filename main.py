@@ -262,6 +262,7 @@ def run_from_csv() -> None:
 
     f = open("Outputs/" + str(time.time()) + ".csv","w+")
     f.write("AI One,Civ,Score,AI Two,Civ,Score\n")
+    f.close()
 
     for i in range(1,len(params)):
         matchup = params[i].split(",")
@@ -276,20 +277,21 @@ def run_from_csv() -> None:
             max_game_time = int(matchup[5])
             Speedup = matchup[6]
 
+            f = open("Outputs/" + str(time.time()) + ".csv","a")
             local_result = game_loop(AI_One, AI_Two, games, max_game_time, Speedup, civ_1, civ_2)
 
             civ_index = 0
             civs = [civ_1, civ_2,"",""]
             for entry in local_result:
                 if civs[civ_index] != "":
+                    print(entry + "," + civs[civ_index] + "," + str(local_result[entry]) + ",")
                     f.write(entry + "," + civs[civ_index] + "," + str(local_result[entry]) + ",")
                 else:
+                    print(entry + "," + str(local_result[entry]) + ",")
                     f.write(entry + "," + str(local_result[entry]) + ",")
                 civ_index += 1
             f.write("\n")
-
-
-    f.close()
+            f.close()
 
 
 
