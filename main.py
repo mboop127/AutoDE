@@ -281,7 +281,7 @@ def run_from_csv() -> None:
             civ_index = 0
             civs = [civ_1, civ_2,"",""]
             for entry in local_result:
-                if cis[civ_index] != "":
+                if civs[civ_index] != "":
                     f.write(entry + "," + civs[civ_index] + "," + str(local_result[entry]) + ",")
                 else:
                     f.write(entry + "," + str(local_result[entry]) + ",")
