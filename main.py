@@ -63,7 +63,12 @@ def set_ais(AI_One: str, AI_Two: str) -> None:
 def press_button_or_crash(image: str) -> None:
     image = Images_Folder + image
 
+    debug_print = True
     while True:
+
+        if debug_print:
+            print(image)
+            debug_print = False
 
         try:
             pyautogui.locateCenterOnScreen(image, confidence=0.9)
@@ -82,7 +87,13 @@ def press_button_or_crash(image: str) -> None:
 def wait_until_seen(image: str) -> None:
     image = Images_Folder + image
 
+
+    debug_print = True
     while True:
+
+        if debug_print:
+            print(image)
+            debug_print = False
 
         try:
             x, y = pyautogui.locateCenterOnScreen(image, confidence=0.9)
