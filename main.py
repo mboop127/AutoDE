@@ -7,8 +7,15 @@ from sys import exit
 
 Images_Folder: str = os.getcwd() + "\\Images\\"
 
-f = open("filepath.txt",'r')
-AI_Path: str = f.read().replace("\\","/") + "/"
+f = open("settings.txt",'r')
+Settings = f.read().split("\n")
+AI_Path: str = Settings[0].replace("\\","/") + "/"
+if "FALSE" in Settings[1]:
+    debug = False
+else:
+    debug = True
+Command_Delay = float( Settings[2].split("=")[1] )
+
 f.close()
 
 AIs_Available: list = []
@@ -63,7 +70,9 @@ def set_ais(AI_One: str, AI_Two: str) -> None:
 def press_button_or_crash(image: str) -> None:
     image = Images_Folder + image
 
-    debug_print = True
+    time.sleep(Command_Delay)
+
+    debug_print = debug
     while True:
 
         if debug_print:
@@ -88,7 +97,7 @@ def wait_until_seen(image: str) -> None:
     image = Images_Folder + image
 
 
-    debug_print = True
+    debug_print = debug
     while True:
 
         if debug_print:
@@ -264,21 +273,49 @@ def run_games(AI_One: str, AI_Two: str, games: int, max_game_time: int, Speedup:
         f.write(entry + "," + str( output[entry] ) + "\n")
     f.close()
 
+    print_string = ""
+    for entry in output:
+        print_string += entry + "," + str(output[entry]) + ","
+    print(print_string)
+
 def run_from_csv() -> None:
 
     f = open("parameters.csv",'r')
     params = f.read().split("\n")
     f.close()
 
+    #validate AIS
+    for i in range(1,len(params)):
+        matchup = params[i].split(",")
+        if len(matchup) > 5:
+            AI_One = matchup[0]
+            AI_Two = matchup[2]
 
-    f = open("Outputs/" + str(time.time()) + ".csv","w+")
-    f.write("AI One,Civ,Score,AI Two,Civ,Score\n")
+            try:
+                f = open(AI_Path + AI_One,'r')
+                f.read()
+                f.close()
+            except UnicodeDecodeError:
+                print(str(AI_One) + " has invalid non-unicode characters. Remove from the csv or modify the .per to resolve.")
+                exit()
+
+            try:
+                f = open(AI_Path + AI_Two,'r')
+                f.read()
+                f.close()
+            except UnicodeDecodeError:
+                print(str(AI_Two) + " has invalid non-unicode characters. Remove from the csv or modify the .per to resolve.")
+                exit()
+
+    output_filename = "Outputs/" + str(time.time())
+    f = open(output_filename + ".csv","w+")
+    f.write("AI One,Civ,Score,AI Two,Civ,Score,\n")
     f.close()
 
     for i in range(1,len(params)):
         matchup = params[i].split(",")
 
-        if len(matchup) > 6:
+        if len(matchup) > 5:
 
             AI_One = matchup[0]
             civ_1 = matchup[1]
@@ -288,19 +325,21 @@ def run_from_csv() -> None:
             max_game_time = int(matchup[5])
             Speedup = matchup[6]
 
-            f = open("Outputs/" + str(time.time()) + ".csv","a")
+            f = open(output_filename + ".csv","a")
             local_result = game_loop(AI_One, AI_Two, games, max_game_time, Speedup, civ_1, civ_2)
 
             civ_index = 0
             civs = [civ_1, civ_2,"",""]
+            print_string = ""
             for entry in local_result:
                 if civs[civ_index] != "":
-                    print(entry + "," + civs[civ_index] + "," + str(local_result[entry]) + ",")
+                    print_string += entry + "," + civs[civ_index] + "," + str(local_result[entry]) + ","
                     f.write(entry + "," + civs[civ_index] + "," + str(local_result[entry]) + ",")
                 else:
-                    print(entry + "," + str(local_result[entry]) + ",")
+                    print_string += entry + "," + str(local_result[entry]) + ","
                     f.write(entry + "," + str(local_result[entry]) + ",")
                 civ_index += 1
+            print(print_string)
             f.write("\n")
             f.close()
 
