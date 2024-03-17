@@ -21,6 +21,7 @@ How to run:
   - Press run and wait!
 - or:
   - edit the "parameters.csv" file to list every matchup you would like tested
+  - press "run from csv"
 
 The results will both print in the CMD window and save to a new csv in the outputs folder; if the program crashes mid run, it should save the results from each matchup as they happen.
 
