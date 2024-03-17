@@ -27,5 +27,5 @@ The results will both print in the CMD window and save to a new csv in the outpu
 Debugging:
 - check the logs for details on what went wrong. Enable debug mode in the setttings file for more information next run.
 - confirm that your resolution matches the above
-- try increasing the command delay in the settings folder
+- try increasing the command delay in the settings file
 - check AI names, check debug log (cmd window) to see if it is getting stuck trying to find a button
