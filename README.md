@@ -5,6 +5,7 @@ Before running:
   - (this **will** overwrite all .ai files in your ai directory. .per files will be untouched. A backup of all .ai files will be saved to /ai_backup, but to be safe I suggest you backup your ai folder before running)
 - confirm your monitor and game are both at 1080x1920p. No other resolutions are supported.
 - confirm your graphical settings are all default - ie, no smooth text
+- open AoE2 DE and set the game settings to how you want them (difficulty, map, cheats, etc.) A future release may allow you to change settings via the auto-DE GUI, but this is not supported for now.
 
 How to run:
 - download and extract git code to anywhere on your computer
@@ -26,5 +27,5 @@ The results will both print in the CMD window and save to a new csv in the outpu
 Debugging:
 - check the logs for details on what went wrong. Enable debug mode in the setttings file for more information next run.
 - confirm that your resolution matches the above
-- try lowering the command delay in the settings folder
-- check AI names, check debug log to see if it is getting stuck trying to find a button
+- try increasing the command delay in the settings folder
+- check AI names, check debug log (cmd window) to see if it is getting stuck trying to find a button
